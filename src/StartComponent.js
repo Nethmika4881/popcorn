@@ -14,7 +14,9 @@ export default function StarComponent({
   size = 24,
   className = "",
   messages = [],
-  defaultValue = 0,
+  rating,
+  handleRating,
+  hasWatched = false,
 }) {
   const textStyle = {
     lineHeight: "1",
@@ -23,14 +25,10 @@ export default function StarComponent({
     fontSize: `${size / 1.5}px`,
   };
 
-  const [rating, setRating] = useState(defaultValue);
   const [tempRating, setTempRating] = useState(0);
-  function handleRating(i) {
-    setRating(i);
-  }
 
   function handleTempRating(i) {
-    setTempRating(i);
+    if (!hasWatched) setTempRating(i);
   }
   return (
     <div style={container} className={className}>
@@ -39,11 +37,12 @@ export default function StarComponent({
           <Star
             key={i}
             full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
-            onRating={() => handleRating(i + 1)}
+            onRating={() => !hasWatched && handleRating(i + 1)}
             onMouseEnter={() => handleTempRating(i + 1)}
             onMouseLeave={() => handleTempRating(rating)}
             color={color}
             size={size}
+            hasWatched={hasWatched}
           />
         ))}
       </div>
@@ -56,9 +55,17 @@ export default function StarComponent({
   );
 }
 
-function Star({ onRating, full, onMouseEnter, onMouseLeave, color, size }) {
+function Star({
+  onRating,
+  full,
+  onMouseEnter,
+  onMouseLeave,
+  color,
+  size,
+  hasWatched = false,
+}) {
   const starStyles = {
-    cursor: "pointer",
+    cursor: hasWatched ? "default" : "pointer",
     display: "inline-block",
     width: `${size}px`,
     height: `${size}px`,

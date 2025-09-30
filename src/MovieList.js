@@ -1,21 +1,23 @@
-import { useState } from "react";
-import { tempMovieData } from "./App";
-
-export default function MovieList({ movies }) {
+ 
+export default function MovieList({ movies, handleSelectedID }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie
+          movie={movie}
+          key={movie.imdbID}
+          handleSelectedID={handleSelectedID}
+        />
       ))}
     </ul>
   );
 }
 
-function Movie({ movie }) {
+function Movie({ movie, handleSelectedID }) {
   return (
     <>
       {" "}
-      <li key={movie.imdbID}>
+      <li key={movie.imdbID} onClick={() => handleSelectedID(movie.imdbID)}>
         <img src={movie.Poster} alt={`${movie.Title} poster`} />
         <h3>{movie.Title}</h3>
         <div>

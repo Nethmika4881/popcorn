@@ -57,7 +57,7 @@ body {
   /* background-color: blue; */
 
   border-radius: 0.9rem;
-  overflow: hidden;
+  overflow: scroll;
   position: relative;
 }
 
@@ -239,8 +239,8 @@ body {
 }
 
 .summary p {
-  /* display: flex; */
-  /* align-items: center; */
+  display: flex;
+  align-items: center;
   gap: 0.8rem;
 }
 
