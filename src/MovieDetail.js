@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarComponent from "./StartComponent";
+import { useKey } from "./useKey";
 
 const KEY = "51040e31";
 
@@ -16,6 +17,14 @@ export default function MovieDetail({
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState(defaultValue);
+  const countRef = useRef(0);
+
+  useEffect(
+    function () {
+      if (rating) countRef.current += 1;
+    },
+    [rating]
+  );
   function handleRating(i) {
     setRating(i);
   }
@@ -41,7 +50,9 @@ export default function MovieDetail({
       poster,
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
+      countRatingDecisions: countRef.current,
     };
+    console.log(newWatchedMovie);
 
     handleWatchList(newWatchedMovie);
     handleDeselectID();
@@ -85,21 +96,7 @@ export default function MovieDetail({
 
   //handle key presses
 
-  useEffect(
-    function () {
-      const callBack = function (e) {
-        if (e.code === "Escape") {
-          handleDeselectID();
-        }
-      };
-      document.addEventListener("keydown", callBack);
-
-      return function () {
-        document.removeEventListener("keydown", callBack);
-      };
-    },
-    [handleDeselectID]
-  );
+  useKey("Escape", handleDeselectID);
   //change document title
 
   useEffect(
